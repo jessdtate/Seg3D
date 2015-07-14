@@ -3,7 +3,7 @@
 
  The MIT License
 
- Copyright (c) 2009 Scientific Computing and Imaging Institute,
+ Copyright (c) 2015 Scientific Computing and Imaging Institute,
  University of Utah.
 
 
@@ -24,7 +24,7 @@
  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  DEALINGS IN THE SOFTWARE.
- */
+*/
 
 #ifndef APPLICATION_LAYERIO_ITKLAYEREXPORTER_H
 #define APPLICATION_LAYERIO_ITKLAYEREXPORTER_H
@@ -79,8 +79,9 @@ public:
 
   /// EXPORT_LAYER
   /// Export the layer to file
-  virtual bool export_layer( const std::string& mode, const std::string& file_path, 
-    const std::string& name ) override;
+  virtual bool export_layer( const std::string& mode,
+                             const std::string& file_path,
+                             const std::string& name ) override;
     
 private:
   bool export_dcm_series( const std::string& file_path, const std::string& name );
