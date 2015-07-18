@@ -1,8 +1,9 @@
+#
 #  For more information, please see: http://software.sci.utah.edu
 # 
 #  The MIT License
 # 
-#  Copyright (c) 2015 Scientific Computing and Imaging Institute,
+#  Copyright (c) 2009 Scientific Computing and Imaging Institute,
 #  University of Utah.
 # 
 #  
@@ -14,7 +15,7 @@
 #  Software is furnished to do so, subject to the following conditions:
 # 
 #  The above copyright notice and this permission notice shall be included
-#  in all copies or substantial portions of the Software. 
+#  in all copies or substantial portions of the Software.
 # 
 #  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 #  OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -23,25 +24,19 @@
 #  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 #  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 #  DEALINGS IN THE SOFTWARE.
+#
 
-SET_PROPERTY(DIRECTORY PROPERTY "EP_BASE" ${ep_base})
 
-SET(data_GIT_URL "https://github.com/CIBC-Internal/Seg3DData.git")
-# master should be always be publicly released version
-SET(data_GIT_TAG "origin/master")
+## This file should be placed in the root directory of your project.
+## Then modify the CMakeLists.txt file in the root directory of your
+## project to incorporate the testing dashboard.
+## # The following are required to uses Dart and the Cdash dashboard
+##   ENABLE_TESTING()
+##   INCLUDE(Dart)
+set(CTEST_PROJECT_NAME "Seg3D")
+set(CTEST_NIGHTLY_START_TIME "00:00:00 EST")
 
-SET(data_DIR "${SEG3D_BINARY_DIR}/Seg3DData")
-
-# If CMake ever allows overriding the checkout command or adding flags,
-# git checkout -q will silence message about detached head (harmless).
-ExternalProject_Add(Data_external
-  GIT_REPOSITORY ${data_GIT_URL}
-  GIT_TAG ${data_GIT_TAG}
-  SOURCE_DIR ${data_DIR}
-  BUILD_COMMAND ""
-  CONFIGURE_COMMAND ""
-  PATCH_COMMAND ""
-  INSTALL_COMMAND ""
-)
-
-SET(TEST_INPUT_PATH ${data_DIR} CACHE PATH "Location for sample data." FORCE)
+set(CTEST_DROP_METHOD "http")
+set(CTEST_DROP_SITE "my.cdash.org")
+set(CTEST_DROP_LOCATION "/submit.php?project=Seg3D")
+set(CTEST_DROP_SITE_CDASH TRUE)
