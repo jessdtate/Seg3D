@@ -80,12 +80,21 @@ IF(BUILD_TESTING)
   ENDIF()
 
   # Coverage through gcov
-  OPTION(ENABLE_GCOV_DATA_FILES "Creates .gcda and .gcno files for coverage" OFF)
-  MARK_AS_ADVANCED(ENABLE_GCOV_DATAFILES)
+  IF(UNIX)
+    OPTION(COVERAGE "Creates .gcda and .gcno files for coverage" OFF)
+    MARK_AS_ADVANCED(COVERAGE)
 
-  IF(ENABLE_GCOV_DATA_FILES)
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
-    SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fprofile-arcs -ftest-coverage")
+    IF(COVERAGE)
+      IF(APPLE)
+        # llvm-cov
+        SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage")
+        SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} --coverage")
+      ELSE()
+        # GCC gcov
+        SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
+        SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fprofile-arcs -ftest-coverage")
+      ENDIF()
+    ENDIF()
   ENDIF()
 ENDIF()
 
