@@ -222,6 +222,9 @@ void Layer::initialize_states( const std::string& name, bool creating )
 
   // == The generation number of the data, or -1 if there is no data ==
   this->add_state( "generation", this->generation_state_, -1 );
+  
+  // == The group number of the layer
+  this->add_state( "group", this->layer_group_, -1 );  
 
   // == The generation number of the data, or -1 if there is no data ==
   this->add_state( "provenance_id", this->provenance_id_state_, -1 );
