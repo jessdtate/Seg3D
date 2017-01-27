@@ -25,8 +25,12 @@
 #  DEALINGS IN THE SOFTWARE.
 
 SET_PROPERTY(DIRECTORY PROPERTY "EP_BASE" ${ep_base})
-SET(implicitFunction_GIT_TAG "origin/3d_convexhull")
+SET(implicitFunction_GIT_TAG "origin/master")
 SET(implicitFunction_DEPENDENCIES "Tetgen_external;Eigen_external")
+
+IF(TRAVIS_BUILD)
+  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w")
+ENDIF()
 
 # If CMake ever allows overriding the checkout command or adding flags,
 # git checkout -q will silence message about detached head (harmless).

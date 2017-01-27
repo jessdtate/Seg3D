@@ -72,7 +72,7 @@ SET(INTERFACE_TOOLINTERFACE_SRCS
   SpeedlineToolInterface.cc
   PointsSelectToolInterface.cc
   PadToolInterface.cc
-  #RadialBasisFunctionToolInterface.cc
+  ImplicitModelToolInterface.cc
   WatershedFilterInterface.cc
 )
 
@@ -122,7 +122,11 @@ SET(INTERFACE_TOOLINTERFACE_MOC_SRCS
   SpeedlineToolInterface.h
   PointsSelectToolInterface.h
   PadToolInterface.h
+<<<<<<< HEAD
   #RadialBasisFunctionToolInterface.h
+=======
+  ImplicitModelToolInterface.h
+>>>>>>> upstream/master
   WatershedFilterInterface.h
 )
 
@@ -175,7 +179,11 @@ SET(INTERFACE_TOOLINTERFACE_UI_SRCS
   SpeedlineToolInterface.ui
   PointsSelectToolInterface.ui
   PadToolInterface.ui
+<<<<<<< HEAD
   #RadialBasisFunctionToolInterface.ui
+=======
+  ImplicitModelToolInterface.ui
+>>>>>>> upstream/master
   WatershedFilterInterface.ui
 )
 

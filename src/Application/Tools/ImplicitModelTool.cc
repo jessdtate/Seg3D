@@ -26,8 +26,8 @@
  DEALINGS IN THE SOFTWARE.
  */
 
-#include <Application/Tools/RadialBasisFunctionTool.h>
-#include <Application/Filters/Actions/ActionRadialBasisFunction.h>
+#include <Application/Tools/ImplicitModelTool.h>
+#include <Application/Filters/Actions/ActionImplicitModel.h>
 
 // Application includes
 #include <Application/Tool/ToolFactory.h>
@@ -44,17 +44,17 @@
 #include <Core/Interface/Interface.h>
 
 // Register the tool into the tool factory
-SCI_REGISTER_TOOL( Seg3D, RadialBasisFunctionTool )
+SCI_REGISTER_TOOL( Seg3D, ImplicitModelTool )
 
 namespace Seg3D
 {
 
-using namespace RadialBasisFunction;
+using namespace ImplicitModel;
 
-const std::string RadialBasisFunctionTool::CONVEX_HULL_2D_C( "2d" );
-const std::string RadialBasisFunctionTool::CONVEX_HULL_3D_C( "3d" );
+const std::string ImplicitModelTool::CONVEX_HULL_2D_C( "2d" );
+const std::string ImplicitModelTool::CONVEX_HULL_3D_C( "3d" );
 
-RadialBasisFunctionTool::RadialBasisFunctionTool( const std::string& toolid ) :
+ImplicitModelTool::ImplicitModelTool( const std::string& toolid ) :
   SeedPointsTool( Core::VolumeType::DATA_E, toolid )
 {
   // TODO: slider max should be up to 20% of source data range.
@@ -63,7 +63,6 @@ RadialBasisFunctionTool::RadialBasisFunctionTool( const std::string& toolid ) :
   this->add_state( "kernel", this->kernel_state_, "thin_plate",
                    "thin_plate|gaussian|multi_quadratic" );
   this->add_state( "view_modes", this->view_modes_state_ );
-  this->add_state( "use_convex_hull", this->use_convex_hull_state_, true );
   this->add_state( "compute_2D_convex_hull", this->compute_2D_convex_hull_state_, true );
   this->add_state( "invert_seed_order", this->invert_seed_order_state_, false );
   this->add_state( "convex_hull_selection",
@@ -72,7 +71,7 @@ RadialBasisFunctionTool::RadialBasisFunctionTool( const std::string& toolid ) :
                    CONVEX_HULL_2D_C + "=2D_convex_hull|" + CONVEX_HULL_3D_C + "=3D_convex_hull" );
 
   this->add_connection( this->convex_hull_selection_state_->value_changed_signal_.connect(
-    boost::bind( &RadialBasisFunctionTool::handle_convex_hull_type_changed, this, _2 ) ) );
+    boost::bind( &ImplicitModelTool::handle_convex_hull_type_changed, this, _2 ) ) );
 
   // TODO: temporary
   this->add_state( "disabled", this->disabled_widget_state_, false );
@@ -80,14 +79,14 @@ RadialBasisFunctionTool::RadialBasisFunctionTool( const std::string& toolid ) :
 
 }
 
-RadialBasisFunctionTool::~RadialBasisFunctionTool()
+ImplicitModelTool::~ImplicitModelTool()
 {
   this->disconnect_all();
 }
 
-bool RadialBasisFunctionTool::handle_mouse_press( ViewerHandle viewer,
-                                                  const Core::MouseHistory& mouse_history,
-                                                  int button, int buttons, int modifiers )
+bool ImplicitModelTool::handle_mouse_press( ViewerHandle viewer,
+                                            const Core::MouseHistory& mouse_history,
+                                            int button, int buttons, int modifiers )
 {
   std::string view_mode;
   Core::VolumeSliceHandle target_slice;
@@ -134,7 +133,6 @@ bool RadialBasisFunctionTool::handle_mouse_press( ViewerHandle viewer,
                                  this->seed_points_state_, pos );
       Core::ActionAdd::Dispatch( Core::Interface::GetMouseActionContext(),
                                  this->view_modes_state_, view_mode );
-//      viewerPointMap.insert( std::make_pair(pos, view_mode) );
       return true;
     }
   }
@@ -149,7 +147,6 @@ bool RadialBasisFunctionTool::handle_mouse_press( ViewerHandle viewer,
                                     this->seed_points_state_, pt );
       Core::ActionRemove::Dispatch( Core::Interface::GetMouseActionContext(),
                                     this->view_modes_state_, view_mode );
-//      viewerPointMap.erase(pt);
     }
     return true;
   }
@@ -157,11 +154,11 @@ bool RadialBasisFunctionTool::handle_mouse_press( ViewerHandle viewer,
   return false;
 }
 
-void RadialBasisFunctionTool::handle_convex_hull_type_changed( const std::string& type )
+void ImplicitModelTool::handle_convex_hull_type_changed( const std::string& type )
 {
   ASSERT_IS_APPLICATION_THREAD();
 
-  if ( type == RadialBasisFunctionTool::CONVEX_HULL_2D_C )
+  if ( type == ImplicitModelTool::CONVEX_HULL_2D_C )
   {
     this->compute_2D_convex_hull_state_->set( true );
   }
@@ -171,7 +168,7 @@ void RadialBasisFunctionTool::handle_convex_hull_type_changed( const std::string
   }
 }
 
-void RadialBasisFunctionTool::handle_seed_points_changed()
+void ImplicitModelTool::handle_seed_points_changed()
 {
   if (this->seed_points_state_->size() == 0)
   {
@@ -181,21 +178,20 @@ void RadialBasisFunctionTool::handle_seed_points_changed()
   SeedPointsTool::handle_seed_points_changed();
 }
 
-void RadialBasisFunctionTool::execute( Core::ActionContextHandle context )
+void ImplicitModelTool::execute( Core::ActionContextHandle context )
 {
   // NOTE: Need to lock state engine as this function is run from the interface thread
   Core::StateEngine::lock_type lock( Core::StateEngine::GetMutex() );
 
-  ActionRadialBasisFunction::Dispatch( context,
-                                       this->target_layer_state_->get(),
-                                       this->seed_points_state_->get(),
-                                       this->view_modes_state_->get(),
-                                       this->normalOffset_state_->get(),
-                                       this->use_convex_hull_state_->get(),
-                                       this->compute_2D_convex_hull_state_->get(),
-                                       this->invert_seed_order_state_->get(),
-                                       this->kernel_state_->get()
-                                     );
+  ActionImplicitModel::Dispatch( context,
+                                 this->target_layer_state_->get(),
+                                 this->seed_points_state_->get(),
+                                 this->view_modes_state_->get(),
+                                 this->normalOffset_state_->get(),
+                                 this->compute_2D_convex_hull_state_->get(),
+                                 this->invert_seed_order_state_->get(),
+                                 this->kernel_state_->get()
+                               );
 }
 
 } // end namespace Seg3D
