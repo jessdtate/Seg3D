@@ -26,8 +26,8 @@
  DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef APPLICATION_TOOLS_RADIALBASISFUNCTIONTOOL_H
-#define APPLICATION_TOOLS_RADIALBASISFUNCTIONTOOL_H
+#ifndef APPLICATION_TOOLS_IMPLICITMODELTOOL_H
+#define APPLICATION_TOOLS_IMPLICITMODELTOOL_H
 
 #include <Application/Tool/SeedPointsTool.h>
 #include <Core/Geometry/Point.h>
@@ -37,13 +37,12 @@
 namespace Seg3D
 {
 
-//typedef std::map< Point, std::string > ViewerPointMap;
 
-class RadialBasisFunctionTool : public SeedPointsTool
+class ImplicitModelTool : public SeedPointsTool
 {
 SEG3D_TOOL(
-  SEG3D_TOOL_NAME( "RadialBasisFunctionTool", "Radial basis function segmentation tool." )
-  SEG3D_TOOL_MENULABEL( "Radial Basis Function" )
+  SEG3D_TOOL_NAME( "ImplicitModelTool", "Implicit model segmentation tool." )
+  SEG3D_TOOL_MENULABEL( "Implicit Model" )
   SEG3D_TOOL_MENU( "Tools" )
   SEG3D_TOOL_SHORTCUT_KEY( "CTRL+ALT+r" )
   SEG3D_TOOL_URL( "http://scirundocwiki.sci.utah.edu/SCIRunDocs/index.php5/CIBC:Seg3D2:RBF:1" )
@@ -51,15 +50,14 @@ SEG3D_TOOL(
 )
 
 public:
-  RadialBasisFunctionTool( const std::string& toolid );
-  virtual ~RadialBasisFunctionTool();
+  ImplicitModelTool( const std::string& toolid );
+  virtual ~ImplicitModelTool();
 
   // -- state --
 public:
   Core::StateRangedDoubleHandle normalOffset_state_;
   Core::StateOptionHandle kernel_state_;
   Core::StateStringVectorHandle view_modes_state_;
-  Core::StateBoolHandle use_convex_hull_state_;
   Core::StateBoolHandle compute_2D_convex_hull_state_;
   Core::StateBoolHandle invert_seed_order_state_;
   Core::StateLabeledOptionHandle convex_hull_selection_state_;
@@ -90,7 +88,6 @@ public:
 private:
   void handle_target_layer_changed();
   void handle_convex_hull_type_changed( const std::string& type );
-//  ViewerPointMap viewerPointMap;
 };
   
 } // end namespace
