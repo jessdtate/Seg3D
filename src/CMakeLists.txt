@@ -39,7 +39,6 @@ IF(POLICY CMP0043)
   CMAKE_POLICY(SET CMP0043 OLD)
 ENDIF()
 IF(POLICY CMP0053)
-  # TODO: revisit on ITK upgrade
   CMAKE_POLICY(SET CMP0053 OLD)
 ENDIF()
 IF(POLICY CMP0054)
@@ -230,6 +229,7 @@ IF (DO_ZLIB_MANGLE)
   ADD_DEFINITIONS(-DZ_PREFIX)
 ENDIF()
 
+
 ###########################################
 # RPATH settings for Linux
 ###########################################
@@ -397,6 +397,7 @@ ENDIF()
 
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 
+
 ###########################################
 # Generate a variable for registering all
 # the plugins
@@ -409,13 +410,6 @@ INCLUDE(CMake/RegisterClass.cmake)
 
 SET(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMake/Modules")
 
-###########################################
-# Configure testing code
-###########################################
-
-IF(BUILD_TESTING)
-  ADD_SUBDIRECTORY(Testing)
-ENDIF()
 
 ###########################################
 # Application layers:
@@ -468,11 +462,9 @@ FILE(GLOB PLUGIN_DIRS "Plugins/*" )
 INCLUDE_DIRECTORIES("${CMAKE_CURRENT_SOURCE_DIR}/Plugins")
 
 FOREACH(DIR ${PLUGIN_DIRS})
-  #IF(NOT ${DIR} MATCHES "Plugins/.svn")
   IF(IS_DIRECTORY ${DIR})
     ADD_SUBDIRECTORY(${DIR})
   ENDIF()
-  #ENDIF()
 ENDFOREACH()
 
 ###########################################
@@ -544,6 +536,15 @@ ENDIF()
 ###########################################
 
 ADD_SUBDIRECTORY(Bootstrap)
+
+
+###########################################
+# Configure testing code
+###########################################
+
+IF(BUILD_TESTING)
+  ADD_SUBDIRECTORY(Testing)
+ENDIF()
 
 
 ###########################################
